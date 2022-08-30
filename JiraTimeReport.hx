@@ -7,7 +7,7 @@ typedef Props = {
 	@:editable("The browser to use to open the url")
 	var browser:String;
 	@:editable("Time sheet report url pattern (::startDate:: and ::endDate:: will be replaced with selected dates)")
-	var urlPattern:String;
+	var url_pattern:String;
 }
 
 @:name("jira-time-report")
@@ -19,7 +19,7 @@ class JiraTimeReport extends IdeckiaAction {
 	public function execute(currentState:ItemState):js.lib.Promise<ItemState> {
 		server.dialog.calendar('Select date', 'Select start date', null, null, null, '%Y-%m-%d').then(startDate -> {
 			server.dialog.calendar('Select date', 'Select end date', null, null, null, '%Y-%m-%d').then(endDate -> {
-				var url = props.urlPattern.replace('::startDate::', startDate);
+				var url = props.url_pattern.replace('::startDate::', startDate);
 				url = url.replace('::endDate::', endDate);
 				var cmd = '${props.browser} --new-tab "$url"';
 				Sys.command(cmd);
