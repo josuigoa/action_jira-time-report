@@ -7,7 +7,7 @@ typedef Props = {
 	@:editable("The browser to use to open the url")
 	var browser:String;
 	@:editable("Time sheet report url pattern (::startDate:: and ::endDate:: will be replaced with selected dates)")
-	var urlPattern:String;
+	var url_pattern:String;
 }
 
 @:name("jira-time-report")
@@ -17,13 +17,23 @@ class JiraTimeReport extends IdeckiaAction {
 		return super.init(initialState);
 
 	public function execute(currentState:ItemState):js.lib.Promise<ItemState> {
-		server.dialog.calendar('Select date', 'Select start date', null, null, null, '%Y-%m-%d').then(startDate -> {
-			server.dialog.calendar('Select date', 'Select end date', null, null, null, '%Y-%m-%d').then(endDate -> {
-				var url = props.urlPattern.replace('::startDate::', startDate);
-				url = url.replace('::endDate::', endDate);
-				var cmd = '${props.browser} --new-tab "$url"';
-				Sys.command(cmd);
-			});
+		server.dialog.custom(haxe.io.Path.join([js.Node.__dirname, 'calendar_begin_end.json'])).then(response -> {
+			switch response {
+				case Some(values):
+					var startDate = '';
+					var endDate = '';
+					for (p in values) {
+						if (p.id == 'start')
+							startDate = p.value;
+						if (p.id == 'end')
+							endDate = p.value;
+					}
+					var url = props.url_pattern.replace('::startDate::', startDate);
+					url = url.replace('::endDate::', endDate);
+					var cmd = '${props.browser} --new-tab "$url"';
+					Sys.command(cmd);
+				case None:
+			}
 		});
 
 		return js.lib.Promise.resolve(currentState);

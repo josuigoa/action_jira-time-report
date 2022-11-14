@@ -1,0 +1,19 @@
+{
+	"title": "Select range",
+	"window_size": [
+		500,
+		400
+	],
+	"body": [
+		{
+			"type": "calendar",
+			"id": "start",
+			"label": "Start date"
+		},
+		{
+			"type": "calendar",
+			"id": "end",
+			"label": "End date"
+		}
+	]
+}
