@@ -6,14 +6,16 @@
 	],
 	"body": [
 		{
-			"type": "calendar",
-			"id": "start",
-			"label": "Start date"
+			"calendar": {
+				"id": "start",
+				"label": "Start date"
+			}
 		},
 		{
-			"type": "calendar",
-			"id": "end",
-			"label": "End date"
+			"calendar": {
+				"id": "end",
+				"label": "End date"
+			}
 		}
 	]
 }
